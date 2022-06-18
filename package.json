@@ -1,0 +1,25 @@
+{
+  "name": "weather-bot",
+  "version": "1.0.0",
+  "description": "This is a Telegram Weather Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "SmartMainnet",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "mongodb": "^4.7.0",
+    "node-telegram-bot-api": "^0.57.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "engines": {
+    "node": "16.15.1"
+  }
+}
