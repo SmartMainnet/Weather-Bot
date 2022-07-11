@@ -1,11 +1,11 @@
 require('dotenv').config()
-const { START_MESSAGE, ERROR_MESSAGE, STICKER, BOT_API, WEATHER_API, MONGO_PASS } = process.env
+const { START_MESSAGE, ERROR_MESSAGE, STICKER, BOT_API, WEATHER_API, MONGODB_PASSWORD } = process.env
 
 const TelegramApi = require('node-telegram-bot-api')
 const axios = require('axios')
 
 const { MongoClient } = require('mongodb')
-const url = `mongodb+srv://admin:${MONGO_PASS}@database.owkg3.mongodb.net/test`
+const url = `mongodb+srv://admin:${MONGODB_PASSWORD}@database.owkg3.mongodb.net/test`
 
 const client = new MongoClient(url)
 client.connect()
@@ -71,7 +71,9 @@ bot.on('message', async (msg) => {
         if (document === null) {
             await users.insertOne({
                 id: chatId,
-                username: msg.from.username
+                username: msg.from.username,
+                first_name: msg.from.first_name,
+                last_name: msg.from.last_name,
             })
             await info.updateOne({}, { $inc: { users: 1 } })
         }
@@ -93,6 +95,17 @@ bot.on('message', async (msg) => {
                 )
             })
 
+            await users.updateOne({ id: chatId },
+                {
+                    $set: {
+                        id: chatId,
+                        username: msg.from.username,
+                        first_name: msg.from.first_name,
+                        last_name: msg.from.last_name,
+                    },
+                    $inc: { calls: 1 },
+                }
+            )
             await info.updateOne({}, { $inc: { calls: 1 } })
 
         } catch {
