@@ -133,6 +133,20 @@ bot.on('message', async (msg) => {
             await info.updateOne({}, { $inc: { calls: 1 } })
         } catch {
             await bot.sendMessage(chatId, 'Это не город!')
+            
+            await users.updateOne({ id: chatId },
+                {
+                    $set: {
+                        username: msg.from.username,
+                        first_name: msg.from.first_name,
+                        last_name: msg.from.last_name,
+                        date_last_bad_call: new Date(),
+                        last_bad_call: text
+                    },
+                    $inc: { bad_calls: 1 }
+                }
+            )
+            await info.updateOne({}, { $inc: { bad_calls: 1 } })
         }
     }
 })
