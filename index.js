@@ -1,7 +1,10 @@
-require('dotenv').config()
-const { STICKER, BOT_API, WEATHER_API, MONGODB_URI } = process.env
+import 'dotenv/config'
+import { MongoClient } from 'mongodb'
+import TelegramApi from 'node-telegram-bot-api'
+import axios from 'axios'
 
-const { MongoClient } = require('mongodb')
+const { BOT_TOKEN, MONGODB_URI, WEATHER_API, STICKER } = process.env
+
 const client = new MongoClient(MONGODB_URI)
 
 client.connect()
@@ -9,11 +12,7 @@ client.connect()
 const db = client.db('weather-bot')
 const users = db.collection('users')
 
-const axios = require('axios')
-const TelegramApi = require('node-telegram-bot-api')
-
-const token = BOT_API
-const bot = new TelegramApi(token, { polling: true })
+const bot = new TelegramApi(BOT_TOKEN, { polling: true })
 
 const translit = word => {
   let answer = ''
